@@ -1,0 +1,11 @@
+{
+  "headings": {
+      "readme": false
+  },
+  "outputs": [
+      {
+          "name": "html",
+          "path": "./docs"
+      }
+  ]
+}

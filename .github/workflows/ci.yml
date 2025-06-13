@@ -1,0 +1,82 @@
+name: Commit Checks
+run-name: ${{ github.ref }} - Commit Checks
+
+on: push
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_COLOR: 1
+    steps:
+      - name: Install ZVM
+        run: |
+          curl https://raw.githubusercontent.com/tristanisham/zvm/master/install.sh | bash
+          echo PATH="~/.zvm/self:~/.zvm/bin:$PATH" >> "$GITHUB_ENV"
+
+      - name: Install Zig 0.14.1
+        run: |
+          zvm install 0.14.1
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Build & Test
+        run: |
+          zig build ci --summary all
+
+  publish-docs:
+    runs-on: ubuntu-latest
+    # [TODO] Enable
+    if: github.ref_name == 'never'
+    steps:
+      - name: Install ZVM
+        run: |
+          curl https://raw.githubusercontent.com/tristanisham/zvm/master/install.sh | bash
+          echo PATH="~/.zvm/self:~/.zvm/bin:$PATH" >> "$GITHUB_ENV"
+
+      - name: Install Zig @ Latest
+        run: |
+          zvm install master
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Generate Docs
+        run: |
+          zig build docs --summary all
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./docs"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

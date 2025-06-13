@@ -1,0 +1,20 @@
+*.node
+*.tsbuildinfo
+**/.zig-cache
+**/zig-out
+build
+dist
+docs
+node_modules
+publish
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# IDE - VSCode
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+!.vscode/tasks.json

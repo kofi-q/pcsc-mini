@@ -1,0 +1,21 @@
+.{
+    .name = .pcsc_mini,
+    .version = "0.0.1",
+    .fingerprint = 0xe037dfdfcd9c7ffb,
+    .minimum_zig_version = "0.14.1",
+    .dependencies = .{
+        .base = .{
+            .hash = "base-0.1.0-rhH4plM0BQBPMYDPr-wk3TN6fXEuKqBWa_lfvkTmFg_3",
+            .url = "git+https://github.com/kofi-q/base-z.git#fd8716bbc9ee6a89c76cb15b9e4419715143b199",
+        },
+        .pcsc = .{
+            .hash = "pcsc-0.1.0-sAX2fsYbBgAQIzJXCSmbJ1qTH7VurlLDAE26wrqRmNU9",
+            .url = "git+https://github.com/kofi-q/pcsc-z.git#22b619bebfe822ec021fc88c7c1935ea9d8248a6",
+        },
+        .tokota = .{
+            .hash = "tokota-0.1.0-BE_-ynzcCQAjNoWW056AFoyUZCd5sLeOt4kPES-ULF7R",
+            .url = "git+https://github.com/kofi-q/tokota.git#40e2a8249a5a571fef9ce6e24ccbb52ee52cb718",
+        },
+    },
+    .paths = .{""},
+}
