@@ -48,8 +48,7 @@ jobs:
 
   publish-docs:
     runs-on: ubuntu-latest
-    # [TODO] Enable
-    if: github.ref_name == 'never'
+    if: github.ref_name == 'main'
     steps:
       - name: Install ZVM
         run: |
