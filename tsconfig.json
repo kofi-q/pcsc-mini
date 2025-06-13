@@ -16,8 +16,5 @@
     "strict": true,
     "target": "ESNext"
   },
-  "include": [
-    "prettier.config.mjs",
-    "lib"
-  ]
+  "include": ["lib"]
 }
