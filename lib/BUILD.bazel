@@ -1,9 +1,0 @@
-load("//src/tools/ts_build:lint_test.bzl", "lint_test")
-load("//src/tools/ts_build:ts_library.bzl", "ts_library")
-
-ts_library(
-    name = "lib",
-    deps = ["//:node_modules/@types/node"],
-)
-
-lint_test(name = "lint")
