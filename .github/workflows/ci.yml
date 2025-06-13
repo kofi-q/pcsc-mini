@@ -64,6 +64,16 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Set up PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
       - name: Generate Docs
         run: |
           zig build docs --summary all
