@@ -286,16 +286,11 @@ function onError(err) {
  * @param {unknown} err
  */
 function errCode(err) {
-  if (
-    !err ||
-    typeof err !== "object" ||
-    !("code" in err) ||
-    typeof err.code !== "string"
-  ) {
-    return undefined;
+  if (err instanceof Error && "code" in err) {
+    return err.code;
   }
 
-  return err.code;
+  return undefined;
 }
 
 /**

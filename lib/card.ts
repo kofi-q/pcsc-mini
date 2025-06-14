@@ -321,40 +321,31 @@ export class Card {
  * The state of a connected smart card.
  */
 export class CardState {
-  readonly #raw: pcsc.CardState;
-  readonly #status: CardStatusFlags;
-
-  constructor(state: pcsc.CardState) {
-    this.#raw = state;
-    this.#status = new CardStatusFlags(this.#raw.status);
-  }
-
   /**
    * The card [ATR](https://en.wikipedia.org/wiki/Answer_to_reset) value.
    */
-  atr(): Uint8Array {
-    return this.#raw.atr;
-  }
+  readonly atr: Uint8Array;
 
   /**
    * The currently active protocol.
    */
-  protocol(): Protocol {
-    return this.#raw.protocol;
-  }
+  readonly protocol: Protocol;
 
   /**
    * Name of the reader containing the card.
    */
-  readerName(): string {
-    return this.#raw.readerName;
-  }
+  readonly readerName: string;
 
   /**
    * The current card status.
    */
-  status(): CardStatusFlags {
-    return this.#status;
+  readonly status: CardStatusFlags;
+
+  constructor(state: pcsc.CardState) {
+    this.atr = state.atr;
+    this.protocol = state.protocol;
+    this.readerName = state.readerName;
+    this.status = new CardStatusFlags(state.status);
   }
 
   /**
@@ -362,10 +353,10 @@ export class CardState {
    */
   toString(): string {
     return (
-      `[${this.#raw.readerName}]:\n` +
-      `    Protocol: ${pcsc.protocolString(this.#raw.protocol)}\n` +
-      `    Status: ${this.#status}\n` +
-      `    ATR: { ${byteString(this.#raw.atr)} }`
+      `[${this.readerName}]:\n` +
+      `    Protocol: ${pcsc.protocolString(this.protocol)}\n` +
+      `    Status: ${this.status}\n` +
+      `    ATR: { ${byteString(this.atr)} }`
     );
   }
 }
