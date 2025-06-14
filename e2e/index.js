@@ -81,12 +81,15 @@ class Reader {
       return;
     }
 
-    if (status.has(ReaderStatus.IN_USE) || this.#card === "busy") {
+    if (
+      status.hasAny(ReaderStatus.IN_USE, ReaderStatus.EXCLUSIVE) ||
+      this.#card === "busy"
+    ) {
       this.#log.flush();
       return;
     }
 
-    if (status.has(ReaderStatus.EMPTY) || this.#card) {
+    if (status.has(ReaderStatus.EMPTY)) {
       if (this.#card) {
         this.#log.log("\n  ┗━ Card removed. Disconnecting...");
 
@@ -113,7 +116,7 @@ class Reader {
 
     try {
       if (!this.#card) {
-        this.#log.logNow("\n  ┗━ Card inserted. Connecting...");
+        this.#log.logNow("\n  ┗━ Card inserted. Connecting in SHARED mode...");
 
         this.#card = "busy";
         this.#card = await this.#reader.connect(CardMode.SHARED);
@@ -245,11 +248,38 @@ class Reader {
     try {
       this.#log.log(`\n${this.printName()}`, `\nEnding transaction...`);
 
-      await txn.end(CardDisposition.LEAVE);
+      await this.withLock(() => txn.end(CardDisposition.LEAVE));
 
       this.#log.logNow("\n  ┗━ 🟢 Transaction ended.");
     } catch (err) {
       this.#log.logNow("\n  ┗━ 🔴 Failed:", err);
+
+      if (errCode(err) === "NoSmartCard") return;
+    }
+
+    try {
+      this.#log.logNow(
+        `\n${this.printName()}`,
+        `\nAttempting reconnect in EXCLUSIVE mode...`,
+      );
+
+      const newProto = await this.withLock(card =>
+        card.reconnect(pcsc.CardMode.EXCLUSIVE, pcsc.CardDisposition.LEAVE),
+      );
+
+      this.#log.logNow(
+        `\n${this.printName()}`,
+        "\n🟢 Reconnected in EXCLUSIVE mode with protocol:",
+        pcsc.protocolString(newProto),
+      );
+    } catch (err) {
+      this.#log.logNow(
+        `\n${this.printName()}`,
+        "\n  ┗━ 🔴 Reconnect failed:",
+        err,
+      );
+
+      if (errCode(err) === "NoSmartCard") return;
     }
   };
 

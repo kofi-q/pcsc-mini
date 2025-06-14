@@ -136,6 +136,11 @@ export class Card {
 
   /**
    * The currently active card communication protocol.
+   *
+   * This is set when the card connection is first established and updated after
+   * {@link reconnect} calls. It will *not* be updated if/when a protocol is
+   * negotiated via {@link control}.
+   *
    * @throws {@link Err}
    */
   protocol(): Protocol {
@@ -156,36 +161,12 @@ export class Card {
    *
    * @param mode - Access mode for the restored connection.
    * @param initAction - Action to take on the card when reconnecting.
+   * @returns - The active protocol after reconnection.
    *
    * @throws {@link Err}
    */
-  reconnect(mode: CardMode, initAction: CardDisposition): Promise<void> {
-    return this.#card.reconnect(mode, undefined, initAction);
-  }
-
-  /**
-   * Attempts to re-establish a previously reset connection.
-   *
-   * If connected in {@link CardMode.SHARED}, another process may reset the
-   * card, causing successive commands to return an error. In those cases,
-   * calling {@link reconnect} will restore the connection accordingly.
-   *
-   * > [!NOTE]
-   * > For the sake of portability across platforms, the reconnect request is
-   * > sent with the previously active protocol. To change protocols, first
-   * > {@link disconnect} and then establish a new connection.
-   *
-   * @param mode - Access mode for the restored connection.
-   * @param initAction - Action to take on the card when reconnecting.
-   *
-   * @throws {@link Err}
-   */
-  reconnectProtocol(
-    mode: CardMode,
-    protocol: Protocol,
-    initAction: CardDisposition,
-  ): Promise<void> {
-    return this.#card.reconnect(mode, protocol, initAction);
+  reconnect(mode: CardMode, initAction: CardDisposition): Promise<Protocol> {
+    return this.#card.reconnect(mode, initAction);
   }
 
   /**

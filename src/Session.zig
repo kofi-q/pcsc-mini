@@ -177,11 +177,10 @@ pub const Api = t.Api(*Session, struct {
         return if (self.card) |card| card.protocol else .UNSET;
     }
 
-    /// Attempts to reconnect to a previously disconnected card.
+    /// Attempts to reconnect to a card after a reset by another process.
     pub fn reconnect(
         call: Call,
         mode: CardMode,
-        proto: ?Protocol,
         disposition: Disposition,
     ) !t.Promise {
         const self = try fromCall(call);
@@ -192,7 +191,6 @@ pub const Api = t.Api(*Session, struct {
             .disposition = disposition,
             .in_use = true,
             .mode = mode,
-            .protocol = proto orelse self.card.?.protocol,
             .session = self,
             .task_js = undefined,
         } };
@@ -420,7 +418,6 @@ const TaskReconnect = struct {
     disposition: Disposition,
     in_use: bool,
     mode: CardMode,
-    protocol: Protocol,
     session: *Session,
     task_js: t.Async.Task(*@This()),
 
@@ -428,13 +425,11 @@ const TaskReconnect = struct {
         self.in_use = false;
     }
 
-    pub fn execute(self: *const TaskReconnect) !void {
+    pub fn execute(self: *const TaskReconnect) !Protocol {
         const card = &(self.session.card orelse return error.NoCardConnection);
-        return card.reconnectProtocol(
-            self.mode,
-            self.protocol,
-            self.disposition,
-        );
+        try card.reconnect(self.mode, self.disposition);
+
+        return card.protocol;
     }
 
     pub fn cleanUp(self: *TaskReconnect, _: t.Env) void {

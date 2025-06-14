@@ -132,11 +132,7 @@ export interface Card {
 
   protocol(): Protocol;
 
-  reconnect(
-    mode: CardMode,
-    protocol?: Protocol,
-    disposition: CardDisposition,
-  ): Promise<void>;
+  reconnect(mode: CardMode, disposition: CardDisposition): Promise<Protocol>;
 
   state(): Promise<CardState>;
 
