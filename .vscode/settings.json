@@ -47,6 +47,7 @@
     "pcsc",
     "SMARTCARD",
     "tokota",
+    "typedoc",
     "usingnamespace",
     "usize"
   ],
