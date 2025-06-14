@@ -17,7 +17,7 @@ function onReader(reader: pcsc.Reader) {
     if (!status.has(ReaderStatus.PRESENT)) return;
     if (status.hasAny(ReaderStatus.MUTE, ReaderStatus.IN_USE)) return;
 
-    const card = await reader.connect(CardMode.EXCLUSIVE);
+    const card = await reader.connect(CardMode.SHARED);
     console.log(`${await card.state()}`);
 
     const resTx =  await card.transmit(
@@ -169,7 +169,7 @@ function onReader(reader: pcsc.Reader) {
     }
 
     try {
-      if (!card) card = await reader.connect(CardMode.EXCLUSIVE);
+      if (!card) card = await reader.connect(CardMode.SHARED);
 
       // Transmit Uint8Array (or NodeJS Buffer) data:
       const res = await card.transmit(
