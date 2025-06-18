@@ -135,6 +135,8 @@ pub const Api = t.Api(*Client, struct {
     pub fn start(call: Call, on_change: t.Fn, on_err: t.Fn) !void {
         const self = try fromCall(call);
 
+        log.debug("Start requested. Initializing monitoring loop...", .{});
+
         if (self.monitoring_thread) |_| return call.env.throwErrCode(
             error.ClientAlreadyStarted,
             "PCSC client is already monitoring for reader/card updates.",
@@ -167,6 +169,8 @@ pub const Api = t.Api(*Client, struct {
     /// Closes the connection to the PCSC server and
     /// shuts down the background monitoring thread.
     pub fn stop(call: Call) !void {
+        log.debug("Stop requested.", .{});
+
         const self = try fromCall(call);
         try self.stopImpl();
     }
@@ -238,27 +242,29 @@ fn fromCall(call: Call) !*Client {
 /// etc). Calls the stored change/error event listener thread-safe fns with the
 /// relevant data when detected.
 fn mainLoop(self: *Client) void {
+    defer {
+        self.on_change.?.release(.release) catch |err| log.warn(
+            "Unable to release thread-safe fn for reader status callback: {}\n",
+            .{err},
+        );
+
+        self.on_err.?.release(.release) catch |err| log.warn(
+            "Unable to release thread-safe fn for client error callback: {}\n",
+            .{err},
+        );
+    }
+
     while (self.tick()) {} else |err| switch (err) {
-        pcsc.Err.Cancelled,
-        t.Err.ThreadsafeFnClosing,
-        => {},
+        t.Err.ThreadsafeFnClosing => log.debug("Node process exiting...", .{}),
+
+        pcsc.Err.Cancelled => log.debug("Monitoring loop stopped.", .{}),
 
         pcsc.Err.Shutdown,
         pcsc.Err.SystemCancelled,
-        => self.sendErr(err, "PCSC server shut down."),
+        => self.sendErr(err, "PCSC server shut down unexpectedly."),
 
         else => self.sendErr(err, "Reader monitoring loop failed."),
     }
-
-    self.on_change.?.release(.release) catch |err| log.warn(
-        "Unable to release thread-safe fn for reader status callback: {}\n",
-        .{err},
-    );
-
-    self.on_err.?.release(.release) catch |err| log.warn(
-        "Unable to release thread-safe fn for client error callback: {}\n",
-        .{err},
-    );
 }
 
 inline fn readerName(reader: *const Reader) []const u8 {
@@ -288,6 +294,8 @@ fn sendErr(self: *const Client, code: anyerror, comptime msg: []const u8) void {
 /// shuts down the background monitoring thread.
 fn stopImpl(self: *Client) !void {
     const client = self.client orelse return;
+
+    log.debug("Shutting down monitoring loop...", .{});
 
     try client.deinit();
 

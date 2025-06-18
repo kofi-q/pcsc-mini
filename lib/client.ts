@@ -45,6 +45,7 @@ export class Client extends EventEmitter<{
 }> {
   readonly #client: pcsc.Client;
   readonly #readers: Record<string, Reader> = {};
+  #running = false;
 
   constructor(addon = pcsc) {
     super();
@@ -59,6 +60,13 @@ export class Client extends EventEmitter<{
   }
 
   /**
+   * `true` if the reader state monitoring thread is currently running.
+   */
+  running(): boolean {
+    return this.#running;
+  }
+
+  /**
    * Start monitoring for reader status changes.
    *
    * A subsequent call to {@link stop} will stop monitoring and detach
@@ -67,7 +75,9 @@ export class Client extends EventEmitter<{
    * @throws {@link Err}
    */
   start(): Client {
+    this.#running = true;
     this.#client.start(this.#onStateChange, this.#onError);
+
     return this;
   }
 
@@ -80,10 +90,20 @@ export class Client extends EventEmitter<{
    * @throws {@link Err}
    */
   stop(): void {
+    this.#running = false;
     this.#client.stop();
+
+    for (const name of Object.keys(this.#readers)) {
+      this.#onReaderDisconnect(name);
+    }
   }
 
-  #onError = (err: Err) => this.emit("error", err);
+  #onError = (err: Err) => {
+    // Ignore shutdown errors when the monitoring thread is stopped.
+    if (!this.#running) return;
+
+    this.emit("error", err);
+  };
 
   #onReaderConnect = (name: string): Reader => {
     const existingReader = this.#readers[name];
