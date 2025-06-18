@@ -1,4 +1,5 @@
 const assert = require("node:assert");
+const readline = require("node:readline");
 
 const { Chalk } = require("chalk");
 const pcsc = require("pcsc-mini");
@@ -17,6 +18,8 @@ const client = new pcsc.Client()
   .start();
 
 console.log("\nMonitoring started...");
+
+listenForHotkeys();
 
 class Reader {
   /** @type {"busy" | pcsc.Card | undefined} */
@@ -363,4 +366,31 @@ function takeChalk() {
 /** @param {typeof chalk} ch  */
 function giveChalk(ch) {
   chalks.push(ch);
+}
+
+function listenForHotkeys() {
+  readline.emitKeypressEvents(process.stdin);
+  process.stdin.setRawMode(true);
+  process.stdin.on("keypress", async (key, data) => {
+    switch (key) {
+      case "s": {
+        if (!client.running()) {
+          console.log("Start requested. Resuming monitoring thread...");
+          client.start();
+
+          break;
+        }
+
+        console.log("Stop requested. Shutting down monitoring thread...");
+        client.stop();
+
+        break;
+      }
+
+      default: {
+        if (data.ctrl && data.name === "c") process.exit(0);
+        break;
+      }
+    }
+  });
 }
