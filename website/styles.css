@@ -102,6 +102,18 @@ code.tsd-tag {
   }
 }
 
+.tsd-accordion-details {
+  >a {
+    /*
+    * A little hacky, but typedoc pulls in the NPM badge logo in the readme
+    * title into the sidebar as escaped HTML.
+    * [TODO] Figure out a way around this, or do it in JS instead to avoid
+    * hiding on all pages.
+    */
+    display: none;
+  }
+}
+
 ul.tsd-parameter-list {
   li {
     span {

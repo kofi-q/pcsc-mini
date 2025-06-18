@@ -163,6 +163,7 @@ fn addDocs(
         "--includeVersion",      "lib",
     });
     docs_ts.step.dependOn(steps.deps);
+    docs_zig.step.dependOn(&docs_ts.step);
 
     steps.docs.dependOn(&docs_ts.step);
     steps.docs.dependOn(&docs_zig.step);

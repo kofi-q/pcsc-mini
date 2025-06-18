@@ -1,11 +1,43 @@
 {
+  "$schema": "https://typedoc.org/schema.json",
   "headings": {
-      "readme": false
+    "readme": false
   },
+  "hostedBaseUrl": "https://kofi-q.github.io/pcsc-mini",
+  "kindSortOrder": [
+    "Class",
+    "Enum",
+    "Interface",
+    "Reference",
+    "Project",
+    "Module",
+    "Namespace",
+    "EnumMember",
+    "TypeAlias",
+    "Constructor",
+    "Property",
+    "Variable",
+    "Function",
+    "Accessor",
+    "Method",
+    "Parameter",
+    "TypeParameter",
+    "TypeLiteral",
+    "CallSignature",
+    "ConstructorSignature",
+    "IndexSignature",
+    "GetSignature",
+    "SetSignature"
+  ],
   "outputs": [
-      {
-          "name": "html",
-          "path": "./docs"
-      }
-  ]
+    {
+      "name": "html",
+      "path": "./docs"
+    }
+  ],
+  "navigationLinks": {
+    "Zig Docs":  "https://kofi-q.github.io/pcsc-mini/zig",
+    "NPM": "https://npmjs.com/package/pcsc-mini",
+    "GitHub": "https://github.com/kofi-q/pcsc-mini"
+  },
 }

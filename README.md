@@ -1,4 +1,4 @@
-# pcsc-mini
+# pcsc-mini • <a href="https://npmjs.com/package/pcsc-mini"><img alt="NPM Version" height="21px" src="https://img.shields.io/npm/v/pcsc-mini?style=for-the-badge&logo=npm&logoColor=%23333&logoSize=auto&labelColor=%23eee&color=%23a85270"></a>
 
 ` › NodeJS PC/SC API bindings for smart card access on Linux / MacOS / Win32 `
 
