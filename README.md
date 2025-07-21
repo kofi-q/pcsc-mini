@@ -209,7 +209,7 @@ function onReader(reader: pcsc.Reader) {
 
 |                          | Minimum Version | Recommended Version                |
 |--------------------------|-----------------|------------------------------------|
-| **Zig**                  | v0.14.1         | See [`.zigversion`](.zigversion)   |
+| **Zig**                  | v0.15.0         | See [`.zigversion`](.zigversion)   |
 | **NodeJS**               | v24.0.0         | See [`.nvmrc`](.nvmrc)             |
 | **pnpm**                 | v10.0.0         | See [`package.json`](package.json) |
 | **<sub>OPTIONAL:</sub>** |                 |                                    |

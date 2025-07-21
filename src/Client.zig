@@ -244,12 +244,12 @@ fn fromCall(call: Call) !*Client {
 fn mainLoop(self: *Client) void {
     defer {
         self.on_change.?.release(.release) catch |err| log.warn(
-            "Unable to release thread-safe fn for reader status callback: {}\n",
+            "Unable to release thread-safe fn for reader status callback: {t}\n",
             .{err},
         );
 
         self.on_err.?.release(.release) catch |err| log.warn(
-            "Unable to release thread-safe fn for client error callback: {}\n",
+            "Unable to release thread-safe fn for client error callback: {t}\n",
             .{err},
         );
     }
@@ -279,8 +279,8 @@ fn sendErr(self: *const Client, code: anyerror, comptime msg: []const u8) void {
     self.on_err.?.call(event, .non_blocking) catch |err| switch (err) {
         t.Err.ThreadsafeFnClosing => {},
         else => log.err(
-            \\Unable to emit error event: {[reason]}
-            \\  Original error code: {[code]}
+            \\Unable to emit error event: {[reason]t}
+            \\  Original error code: {[code]t}
             \\  Original error message: {[msg]s}
         , .{
             .reason = err,
@@ -440,7 +440,7 @@ const TaskConnect = struct {
     }
 
     pub fn complete(self: *TaskConnect, _: t.Env) !Session.Api {
-        log.debug("[{s}] Card connected with protocol {}", .{
+        log.debug("[{f}] Card connected with protocol {f}", .{
             self.reader_name,
             self.session.card.?.protocol,
         });

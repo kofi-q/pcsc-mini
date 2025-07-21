@@ -2,19 +2,19 @@
     .name = .pcsc_mini,
     .version = "0.0.1",
     .fingerprint = 0xe037dfdfcd9c7ffb,
-    .minimum_zig_version = "0.14.1",
+    .minimum_zig_version = "0.15.0-dev.1149+4e6a04929",
     .dependencies = .{
         .base = .{
-            .hash = "base-0.1.0-rhH4plM0BQBPMYDPr-wk3TN6fXEuKqBWa_lfvkTmFg_3",
-            .url = "git+https://github.com/kofi-q/base-z.git#fd8716bbc9ee6a89c76cb15b9e4419715143b199",
+            .hash = "base-0.1.0-rhH4pgsmBQBZ8SbgHBtDssY7s-GBAFiKGrw3fffJ9gCZ",
+            .url = "git+https://github.com/kofi-q/base-z.git?ref=zig-v0.15.0#75d2f907388f3e847b23c2a9d76163efae267a6f",
         },
         .pcsc = .{
-            .hash = "pcsc-0.1.0-sAX2fsYbBgAQIzJXCSmbJ1qTH7VurlLDAE26wrqRmNU9",
-            .url = "git+https://github.com/kofi-q/pcsc-z.git#22b619bebfe822ec021fc88c7c1935ea9d8248a6",
+            .hash = "pcsc-0.1.0-sAX2fuMbBgA7WLJnLQADaQBcfAu4fmGTgoq1XVFSJJQR",
+            .url = "git+https://github.com/kofi-q/pcsc-z.git?ref=zig-v0.15.0#a33667898dffc8a637f82d72ec98124b1b2a4408",
         },
         .tokota = .{
-            .hash = "tokota-0.1.0-BE_-ylDeCQAum1Vraa74pKPRsq9i_ruLR_T-ESP9rvSW",
-            .url = "git+https://github.com/kofi-q/tokota.git#49b5c5356ad1cf8e45a49eabbd019c8355852465",
+            .hash = "tokota-0.1.0-BE_-ypapCQBnzKgISCoouhoRfcIlcnrkCKahsYwzK2DE",
+            .url = "git+https://github.com/kofi-q/tokota.git?ref=zig-v0.15.0#d9f01960791de904edee0010ccad9e3d61d6bb3d",
         },
     },
     .paths = .{""},
