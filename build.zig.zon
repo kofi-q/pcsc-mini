@@ -13,8 +13,8 @@
             .url = "git+https://github.com/kofi-q/pcsc-z.git#1ea162055ead908ba67f3528a867accd5f3b538e",
         },
         .tokota = .{
-            .hash = "tokota-0.1.0-BE_-yv6sCQAftMmGscctebV8tKcu_YvE4K6VR2YF_O6z",
-            .url = "git+https://github.com/kofi-q/tokota.git#5a3ede35de36398aaa0a2122e47137614e0c5578",
+            .hash = "tokota-0.1.0-BE_-ymrJCQBlVTlEn3wN001HRQhGgaQUAga1e9RyWBYa",
+            .url = "git+https://github.com/kofi-q/tokota.git#d74f5cf642baf75d111d220c890121d40afb85fc",
         },
     },
     .paths = .{""},

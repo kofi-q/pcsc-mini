@@ -47,13 +47,18 @@ pub fn build(b: *std.Build) !void {
             .{ .os_tag = .windows, .cpu_arch = .aarch64 },
             .{ .os_tag = .windows, .cpu_arch = .x86_64 },
         },
+        .win32_runtimes = .{
+            .bun = true,
+            .electron = true,
+            .node = true,
+        },
     });
 
     const addon_dev = createAddon(b, mode, target, .{ .custom = "../lib" });
     b.getInstallStep().dependOn(&addon_dev.install.step);
 
     const addon_stub = createAddon(b, mode, target, .prefix);
-    tokota.Addon.linkNodeStub(b, addon_stub.lib, null);
+    tokota.Addon.linkNodeStub(b, addon_stub.lib, .{});
 
     addDocs(b, &steps, &addon_stub);
     addClientDeps(b, &steps);
@@ -137,15 +142,9 @@ fn addClientRun(b: *std.Build, steps: *const Steps) void {
 fn addDocs(
     b: *std.Build,
     steps: *const Steps,
-    addon_dev: *const tokota.Addon,
+    addon_stub: *const tokota.Addon,
 ) void {
-    const lib = b.addLibrary(.{
-        .name = "pcsc-mini",
-        .root_module = addon_dev.root_module,
-    });
-    tokota.Addon.linkNodeStub(b, lib, null);
-
-    const docs_zig = base.addDocs(b, lib, .{
+    const docs_zig = base.addDocs(b, addon_stub.lib, .{
         .html_logo = "pcsc-mini",
         .install_dir = .{ .custom = "../docs" },
         .install_subdir = "zig",
@@ -230,7 +229,7 @@ fn addZigTests(
     addon_stub: *const tokota.Addon,
 ) void {
     const lib_tests = b.addTest(.{ .root_module = addon_stub.root_module });
-    tokota.Addon.linkNodeStub(b, lib_tests, null);
+    tokota.Addon.linkNodeStub(b, lib_tests, .{});
     lib_tests.use_llvm = true; // x86 backend may be unstable at the moment.
 
     steps.test_zig.dependOn(&b.addRunArtifact(lib_tests).step);

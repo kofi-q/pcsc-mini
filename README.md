@@ -53,15 +53,17 @@ Pre-built binary packages are available for the following targets.
 | OS                           | arm64 |  x86  | x86_64 |
 |------------------------------|:-----:|:-----:|:------:|
 | `Linux ( gnu )`              |   ✅  |  ☑️   |   ✅   |
-| `Linux ( musl )`<sup>*</sup> |   ✅  |  ☑️   |   ✅   |
+| `Linux ( musl )`<sup>1</sup> |   ✅  |  ☑️   |   ✅   |
 | `MacOS`                      |   ✅  | `N/A` |   ☑️   |
-| `Windows`                    |   ☑️  |  ⬜️   |   ✅   |
+| `Windows`<sup>2</sup>        |   ☑️  |  ⬜️   |   ✅   |
 
 <sub>✅ Tested & verified&nbsp;&nbsp;•&nbsp;</sub>
 <sub>☑️ Not tested&nbsp;&nbsp;•&nbsp;</sub>
 <sub>⬜️ Not available</sub>
 
-<sub>* During testing on Alpine, the PCSC server daemon needed to be started *after* a reader was connected for detection/monitoring to work and required a restart whenever a reader was disconnected and reconnected.</sub>
+<sub>1 During testing on Alpine, the PCSC server daemon needed to be started *after* a reader was connected for detection/monitoring to work and required a restart whenever a reader was disconnected and reconnected.</sub>
+
+<sub>2 Windows support is limited to a few JS runtimes at the moment (Node.js, Bun, Electron). If additional runtimes are needed, please feel free to open an issue to request it.</sub>
 
 ### JS Runtime Compatibility
 
