@@ -231,6 +231,7 @@ fn addZigTests(
 ) void {
     const lib_tests = b.addTest(.{ .root_module = addon_stub.root_module });
     tokota.Addon.linkNodeStub(b, lib_tests, null);
+    lib_tests.use_llvm = true; // x86 backend may be unstable at the moment.
 
     steps.test_zig.dependOn(&b.addRunArtifact(lib_tests).step);
 }
@@ -248,6 +249,8 @@ fn configureLib(b: *std.Build, lib: *std.Build.Step.Compile) void {
         .optimize = mode,
         .target = target,
     }).module("pcsc"));
+
+    lib.use_llvm = true; // x86 backend may be unstable at the moment.
 }
 
 fn isCi() bool {

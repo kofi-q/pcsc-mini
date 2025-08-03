@@ -47,7 +47,7 @@ pub const ReaderStatus = t.enums.FromBitFlags(pcsc.Reader.Status, .{});
 /// Human-readable tag names of the enabled flags in the given status value.
 pub fn cardStatusString(status: pcsc.Card.Status) ![]const u8 {
     var buf: [192]u8 = undefined;
-    return std.fmt.bufPrint(&buf, "{}", .{status});
+    return std.fmt.bufPrint(&buf, "{f}", .{status});
 }
 
 /// Platform-specific reader control code.
@@ -71,7 +71,7 @@ pub fn newClient(call: t.Call) !Client.Api {
 /// Human-readable tag name for the given protocol value.
 pub fn protocolString(protocol: pcsc.Protocol) ![]const u8 {
     var buf: [16]u8 = undefined;
-    return std.fmt.bufPrint(&buf, "{}", .{protocol});
+    return std.fmt.bufPrint(&buf, "{f}", .{protocol});
 }
 
 /// Human-readable tag names of the enabled flags in the given status value.
@@ -80,7 +80,7 @@ pub fn readerStatusString(status_: pcsc.Reader.Status) ![]const u8 {
     status.CHANGED = false; // Not useful to log in this context.
 
     var buf: [192]u8 = undefined;
-    return std.fmt.bufPrint(&buf, "{}", .{status});
+    return std.fmt.bufPrint(&buf, "{f}", .{status});
 }
 
 test {
