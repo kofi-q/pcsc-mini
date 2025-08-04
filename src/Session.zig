@@ -305,7 +305,7 @@ const TaskAttributeGet = struct {
     id: pcsc.AttrId,
     in_use: bool,
     session: *Session,
-    task_js: t.Async.Task(*@This()),
+    task_js: t.async.Task(*@This()),
 
     pub fn deinit(self: *TaskAttributeGet) void {
         self.in_use = false;
@@ -336,7 +336,7 @@ const TaskAttributeSet = struct {
     id: pcsc.AttrId,
     in_use: bool,
     session: *Session,
-    task_js: t.Async.Task(*@This()),
+    task_js: t.async.Task(*@This()),
     value: []const u8,
 
     pub fn deinit(self: *TaskAttributeSet) void {
@@ -360,7 +360,7 @@ const TaskControl = struct {
     cmd: ?[]const u8,
     in_use: bool,
     session: *Session,
-    task_js: t.Async.Task(*@This()),
+    task_js: t.async.Task(*@This()),
 
     pub fn deinit(self: *TaskControl) void {
         self.in_use = false;
@@ -391,7 +391,7 @@ const TaskDisconnect = struct {
     disposition: Disposition,
     in_use: bool,
     session: *Session,
-    task_js: t.Async.Task(*@This()),
+    task_js: t.async.Task(*@This()),
 
     pub fn deinit(self: *TaskDisconnect) void {
         self.in_use = false;
@@ -419,7 +419,7 @@ const TaskReconnect = struct {
     in_use: bool,
     mode: CardMode,
     session: *Session,
-    task_js: t.Async.Task(*@This()),
+    task_js: t.async.Task(*@This()),
 
     pub fn deinit(self: *TaskReconnect) void {
         self.in_use = false;
@@ -440,7 +440,7 @@ const TaskReconnect = struct {
 const TaskState = struct {
     in_use: bool,
     session: *Session,
-    task_js: t.Async.Task(*@This()),
+    task_js: t.async.Task(*@This()),
 
     const State = pcsc.Card.State;
 
@@ -485,7 +485,7 @@ const TaskTransmit = struct {
     in_use: bool,
     protocol: Protocol,
     session: *Session,
-    task_js: t.Async.Task(*@This()),
+    task_js: t.async.Task(*@This()),
 
     pub fn deinit(self: *TaskTransmit) void {
         self.in_use = false;
@@ -518,7 +518,7 @@ const TaskTransmit = struct {
 
 const TaskTxnBegin = struct {
     in_use: bool,
-    task_js: t.Async.Task(*@This()),
+    task_js: t.async.Task(*@This()),
     session: *Session,
 
     pub fn deinit(self: *TaskTxnBegin) void {
@@ -569,7 +569,7 @@ const TaskTxnEnd = struct {
     disposition: Disposition,
     in_use: bool,
     session: *Session,
-    task_js: t.Async.Task(*@This()),
+    task_js: t.async.Task(*@This()),
 
     pub fn deinit(self: *TaskTxnEnd) void {
         self.in_use = false;
