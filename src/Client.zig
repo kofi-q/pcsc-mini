@@ -410,7 +410,7 @@ const TaskConnect = struct {
     protocol: Protocol,
     reader_name: ReaderName,
     session: *Session,
-    task_js: t.Async.Task(*@This()),
+    task_js: t.async.Task(*@This()),
 
     const empty = TaskConnect{
         .in_use = false,
